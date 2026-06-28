@@ -1,13 +1,12 @@
 import React from "react";
-import { createBrowserRouter } from "react-router-dom";
+import AppRouter from "./routes/AppRouter";
 
 const App = () => {
-  const router = createBrowserRouter([
-    { path: "/", element: <div></div> },
-    { path: "/pastes", element: <div></div> },
-  ]);
-
-  return <div>App</div>;
+  return (
+    <div>
+      <AppRouter />
+    </div>
+  );
 };
 
 export default App;
