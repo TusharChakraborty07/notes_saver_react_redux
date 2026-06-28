@@ -5,46 +5,43 @@ import {
   MdDelete,
   MdContentCopy,
   MdVisibility,
-  MdShare,
 } from "react-icons/md";
+
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromPastes } from "../redux/slice/pasteSlice";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Paste = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const pastes = useSelector((state) => state.paste.pastes);
 
-  // Search filter
+  // Search
   const filterData = pastes.filter(
     (paste) =>
       paste.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       paste.content.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  // Functions
-  const handleEdit = (pasteId) => {
-    navigate(`/?pasteId=${pasteId}`);
+  // Actions
+  const handleEdit = (id) => {
+    navigate(`/?pasteId=${id}`);
   };
 
-  const handleDelete = (pasteId) => {
-    dispatch(removeFromPastes(pasteId));
+  const handleDelete = (id) => {
+    dispatch(removeFromPastes(id));
   };
 
-  // const handleShare = (pasteId) => {
-  //   console.log("Share:", pasteId);
-  // };
-
-  const handleView = (pasteId) => {
-    navigate(`/paste/${pasteId}`);
+  const handleView = (id) => {
+    navigate(`/paste/${id}`);
   };
 
-  const handleCopy = (pasteId) => {
-    const selectedPaste = pastes.find((paste) => paste._id === pasteId);
+  const handleCopy = (id) => {
+    const selectedPaste = pastes.find((item) => item._id === id);
 
     if (selectedPaste) {
       navigator.clipboard.writeText(selectedPaste.content);
@@ -80,118 +77,141 @@ const Paste = () => {
             rounded-2xl
             border
             shadow-sm
+            outline-none
             focus:ring-2
             focus:ring-indigo-500
-            outline-none
           "
         />
       </div>
 
-      {/* Paste Cards */}
+      {/* Cards */}
       <div className="space-y-6">
         {filterData.length > 0 ? (
           filterData.map((paste) => (
             <div
               key={paste._id}
               className="
-                bg-white
                 border
                 rounded-3xl
                 p-6
                 shadow-sm
                 hover:shadow-xl
-                transition
+                transition-all
               "
             >
-              {/* Header */}
-              <div className="flex justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold">{paste.title}</h2>
+              <div className="flex justify-between gap-8">
+                {/* LEFT */}
+                <div className="flex-1">
+                  <h2 className="text-4xl font-bold mb-3">{paste.title}</h2>
 
-                  <p className="text-sm text-gray-400 mt-1">
-                    {paste.createdAt}
+                  <p
+                    className="
+                      text-gray-500
+                      leading-7
+                      line-clamp-3
+                    "
+                  >
+                    {paste.content}
                   </p>
                 </div>
-              </div>
 
-              {/* Content */}
-              <p
-                className="
-                  mt-4
-                  text-gray-600
-                  line-clamp-3
-                  leading-7
-                "
-              >
-                {paste.content}
-              </p>
+                {/* RIGHT */}
+                <div className="flex flex-col justify-between">
+                  {/* Icons */}
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleEdit(paste._id)}
+                      className="
+                        w-11
+                        h-11
+                        border
+                        rounded-xl
+                        flex
+                        items-center
+                        justify-center
+                        hover:bg-gray-100
+                      "
+                    >
+                      <MdEdit size={20} />
+                    </button>
 
-              {/* Buttons */}
-              <div className="flex flex-wrap gap-3 mt-6">
-                <button
-                  onClick={() => handleEdit(paste._id)}
-                  className="
-                    p-3
-                    rounded-xl
-                    bg-yellow-100
-                    text-yellow-700
-                    hover:bg-yellow-200
-                  "
-                >
-                  <MdEdit size={20} />
-                </button>
+                    <button
+                      onClick={() => handleDelete(paste._id)}
+                      className="
+                        w-11
+                        h-11
+                        border
+                        rounded-xl
+                        flex
+                        items-center
+                        justify-center
+                        hover:bg-red-50
+                      "
+                    >
+                      <MdDelete size={20} />
+                    </button>
 
-                <button
-                  onClick={() => handleDelete(paste._id)}
-                  className="
-                    p-3
-                    rounded-xl
-                    bg-red-100
-                    text-red-700
-                    hover:bg-red-200
-                  "
-                >
-                  <MdDelete size={20} />
-                </button>
+                    <button
+                      onClick={() => handleCopy(paste._id)}
+                      className="
+                        w-11
+                        h-11
+                        border
+                        rounded-xl
+                        flex
+                        items-center
+                        justify-center
+                        hover:bg-green-50
+                      "
+                    >
+                      <MdContentCopy size={20} />
+                    </button>
 
-                {/* <button
-                  onClick={() => handleShare(paste._id)}
-                  className="
-                    p-3
-                    rounded-xl
-                    bg-purple-100
-                    text-purple-700
-                    hover:bg-purple-200
-                  "
-                >
-                  <MdShare size={20} />
-                </button> */}
+                    <button
+                      onClick={() => handleView(paste._id)}
+                      className="
+                        w-11
+                        h-11
+                        border
+                        rounded-xl
+                        flex
+                        items-center
+                        justify-center
+                        hover:bg-blue-50
+                      "
+                    >
+                      <MdVisibility size={20} />
+                    </button>
+                  </div>
 
-                <button
-                  onClick={() => handleCopy(paste._id)}
-                  className="
-                    p-3
-                    rounded-xl
-                    bg-green-100
-                    text-green-700
-                    hover:bg-green-200
-                  "
-                >
-                  <MdContentCopy size={20} />
-                </button>
+                  {/* Footer */}
+                  <div className="flex justify-end gap-4 mt-10">
+                    <div className="flex items-center gap-2 text-gray-400">
+                      <span>📅</span>
 
-                <button
-                  onClick={() => handleView(paste._id)}
-                  className="
-                    p-3
-                    rounded-xl
-                    bg-blue-100
-                    text-blue-700
-                    hover:bg-blue-200
-                  "
-                >
-                  <MdVisibility size={20} />
-                </button>
+                      <span className="text-sm">
+                        {new Date(paste.createdAt).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </span>
+                    </div>
+
+                    {/* <div
+                      className="
+                        px-4
+                        py-1
+                        rounded-full
+                        border
+                        text-green-600
+                        font-medium
+                      "
+                    >
+                      CODE
+                    </div> */}
+                  </div>
+                </div>
               </div>
             </div>
           ))
@@ -200,24 +220,15 @@ const Paste = () => {
             className="
               rounded-3xl
               border
-              bg-white
               py-20
               text-center
             "
           >
             <div className="text-7xl">📝</div>
 
-            <h3
-              className="
-                text-2xl
-                font-semibold
-                mt-4
-              "
-            >
-              No Paste Found
-            </h3>
+            <h2 className="text-2xl font-semibold mt-4">No Paste Found</h2>
 
-            <p className="text-gray-400 mt-2">Create your first paste.</p>
+            <p className="text-gray-400 mt-2">Create your first paste</p>
           </div>
         )}
       </div>

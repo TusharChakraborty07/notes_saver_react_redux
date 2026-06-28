@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { addToPastes, updateToPastes } from "../redux/slice/pasteSlice";
 import toast from "react-hot-toast";
 
 const Home = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState("");
@@ -32,7 +33,7 @@ const Home = () => {
     } else {
       dispatch(addToPastes(paste));
     }
-
+    navigate("/pastes");
     setTitle("");
     setValue("");
     setSearchParams({});
