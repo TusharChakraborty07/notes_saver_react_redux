@@ -55,10 +55,11 @@ Optimized for desktop and mobile screens.
 src/
 │
 ├── components/
+│      ├── Paste.jsx
+│      └── ViewPaste.jsx
+│
 ├── pages/
 │   ├── Home.jsx
-│   ├── Paste.jsx
-│   └── ViewPaste.jsx
 │
 ├── redux/
 │   └── slice/
@@ -75,13 +76,7 @@ src/
 Clone the repository:
 
 ```bash
-git clone <repository-url>
-```
-
-Move into the project:
-
-```bash
-cd pastehub
+git clone https://github.com/TusharChakraborty07/notes_saver_react_redux/
 ```
 
 Install dependencies:
